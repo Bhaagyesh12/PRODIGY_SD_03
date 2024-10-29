@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #1E1E1E; /* Dark background */
+            color: #FFFFFF; /* White text */
+        }
+
+        h1 {
+            color: #FFFFFF; /* White heading */
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        input {
+            margin: 5px;
+            padding: 10px;
+            font-size: 1em;
+            border: 2px solid #FFFFFF; /* White border */
+            border-radius: 5px;
+            background-color: #333333; /* Dark input background */
+            color: #FFFFFF; /* White text */
+        }
+
+        button {
+            padding: 10px;
+            font-size: 1em;
+            background-color: #4CAF50; /* Green background */
+            color: white; /* White text */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+
+        .contact-list {
+            margin-top: 20px;
+            width: 80%;
+        }
+
+        .contact-item {
+            border: 1px solid #FFFFFF; /* White border for contact items */
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            background-color: #444444; /* Darker background for contact items */
+        }
+
+        .edit-button, .delete-button {
+            margin-left: 10px;
+            background-color: #4CAF50; /* Green background */
+            color: white; /* White text */
+        }
+
+        .edit-button:hover, .delete-button:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Contact Management System</h1>
+    
+    <div class="contact-form">
+        <input type="text" id="name" placeholder="Name" required>
+        <input type="text" id="phone" placeholder="Phone Number" required>
+        <input type="email" id="email" placeholder="Email Address" required>
+        <button onclick="addContact()">Add Contact</button>
+    </div>
+
+    <div class="contact-list" id="contactList"></div>
+
+    <script>
+        let contacts = [];
+
+        function addContact() {
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+
+            if (name && phone && email) {
+                const contact = { name, phone, email };
+                contacts.push(contact);
+                displayContacts();
+                clearForm();
+            } else {
+                alert('Please fill all fields!');
+            }
+        }
+
+        function displayContacts() {
+            const contactList = document.getElementById('contactList');
+            contactList.innerHTML = '';
+
+            contacts.forEach((contact, index) => {
+                const contactItem = document.createElement('div');
+                contactItem.classList.add('contact-item');
+                contactItem.innerHTML = `
+                    <strong>Name:</strong> ${contact.name}<br>
+                    <strong>Phone:</strong> ${contact.phone}<br>
+                    <strong>Email:</strong> ${contact.email}<br>
+                    <button class="edit-button" onclick="editContact(${index})">Edit</button>
+                    <button class="delete-button" onclick="deleteContact(${index})">Delete</button>
+                `;
+                contactList.appendChild(contactItem);
+            });
+        }
+
+        function clearForm() {
+            document.getElementById('name').value = '';
+            document.getElementById('phone').value = '';
+            document.getElementById('email').value = '';
+        }
+
+        function editContact(index) {
+            const contact = contacts[index];
+            document.getElementById('name').value = contact.name;
+            document.getElementById('phone').value = contact.phone;
+            document.getElementById('email').value = contact.email;
+
+            deleteContact(index);
+        }
+
+        function deleteContact(index) {
+            contacts.splice(index, 1);
+            displayContacts();
+        }
+    </script>
+</body>
+</html>
